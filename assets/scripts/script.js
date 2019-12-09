@@ -9,6 +9,9 @@ window.onload = function () {
         }).then(function (response) {
             console.log(response)
             let cityDate = $("<div>").text(response.name + " (" + moment().format("L") + ")")
+            let currentImg = $("<img>")
+            currentImg.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon +"@2x.png")
+            cityDate.append(currentImg)
             let temp = $("<div>").text("Tempature:" + fahrenheit(response.main.temp).toFixed(1) + String.fromCharCode(176) + "F")
             let humid = $("<div>").text("Humidity:" + response.main.humidity + "%")
             let wind = $("<div>").text("Wind:" + response.wind.speed + "MPH")
@@ -26,6 +29,7 @@ window.onload = function () {
             for (let i = 0; i < forecasts.length; i++) {
                 if (forecasts[i].dt_txt.includes(day)) {
                     fiveDay[fiveDay.length - 1].clouds.push(forecasts[i].clouds.all);
+                    fiveDay[fiveDay.length - 1].icon.push(forecasts[i].weather[0].icon);
                     fiveDay[fiveDay.length - 1].humidity.push(forecasts[i].main.humidity);
                     fiveDay[fiveDay.length - 1].highTemp.push(forecasts[i].main.temp_max);
                     fiveDay[fiveDay.length - 1].lowTemp.push(forecasts[i].main.temp_min);
@@ -35,6 +39,7 @@ window.onload = function () {
                     let obj = {
                         day: day,
                         "clouds": [forecasts[i].clouds.all],
+                        "icon":[forecasts[i].weather[0].icon],
                         "humidity": [forecasts[i].main.humidity],
                         "highTemp": [forecasts[i].main.temp_max],
                         "lowTemp": [forecasts[i].main.temp_min],
@@ -49,11 +54,11 @@ window.onload = function () {
             for (let i = 0; i< 5; i++) {
                 let card = $("<div>")
                 let date = $("<div>").text(fiveDay[i].day);
-                let icon = $("<div>").text(fiveDay[i].day);
+                let icon = $("<img>").attr("src","http://openweathermap.org/img/wn/" +fiveDay[i].icon[5]+"@2x.png");
                 let high = $("<div>").text("High Tempature:" + fahrenheit(Math.max(...fiveDay[i].highTemp)).toFixed(1) + String.fromCharCode(176) + "F");
                 let low = $("<div>").text("Low Tempature:" + fahrenheit(Math.min(...fiveDay[i].lowTemp)).toFixed(1) + String.fromCharCode(176) + "F");
-                let humidity = $("<div>").text((fiveDay[i].humidity.reduce((a,b) => a + b, 0) /fiveDay[i].humidity.length).toFixed(0));
-                card.append(date, high, low, humidity);
+                let humidity = $("<div>").text("Humidity:" +(fiveDay[i].humidity.reduce((a,b) => a + b, 0) /fiveDay[i].humidity.length).toFixed(0)+ "%");
+                card.append(date, icon, high, low, humidity);
                 $("#forecast").append(card);
             }
 
@@ -73,8 +78,8 @@ window.onload = function () {
         })
     };
     function fahrenheit(temp) {
-        temp -= 273.15
-        temp = temp * 9 / 5 + 32;
+        temp = temp * 9 / 5;
+        temp -= 459.67
         return temp;
     };
     getWeather("tucson");
