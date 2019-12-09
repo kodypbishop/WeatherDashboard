@@ -1,5 +1,7 @@
 window.onload = function () {
     function getWeather(city) {
+        $("#current").html("");
+        $("#forecast").html("");
         let url = "https://api.openweathermap.org/data/2.5/forecast?q="
         let appid = "&appid=ca120aa4d95679fffa136b2266aec98a"
         let fullURL = url + city + appid
@@ -83,5 +85,10 @@ window.onload = function () {
         return temp;
     };
     getWeather("tucson");
-
+    $("#search").on("click", function(event){
+        event.preventDefault();
+        let searchVal = $("#citySearch").val()
+        console.log(searchVal)
+        getWeather(searchVal);
+    })
 }
