@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,36 +9,45 @@
     <link rel="stylesheet" href="./assets/style/reset.css">
     <link rel="stylesheet" href="./assets/style/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
     <script src="./assets/scripts/jquery-3.4.1.min.js"></script>
     <script src="./assets/scripts/moment.js"></script>
     <script src="./assets/scripts/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./assets/style/style.css">
     <script src="./assets/scripts/script.js"></script>
 </head>
+
 <body>
-    <h1>Weather Dashboard</h1>
+
     <div class="cotainer">
         <div class="row">
-            <div class="col-sm-3">
-                <h3>Search for a City:</h3>
-                <form class="form-inline p-2">
-                    <div class="form-group mb-2 ">
-                      <input type="text" class="form-control mr-0" id="citySearch" placeholder="Input City">
+            <div class="container col-12 text-white bg-dark text-center">
+                <h1>Weather Dashboard</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 bg-light text-dark">
+                <h4>Search for a City:</h4>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Input City" aria-label="Recipient's username"
+                        aria-describedby="button-addon" id="citySearch">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="search"><i class="fa fa-search"
+                                aria-hidden="true"></i></button>
                     </div>
-                    <button type="submit" class="btn btn-primary mb-2 ml-0" id="search"><i class="fa fa-search" aria-hidden="true"></i></button>
-                  </form>
+                </div>
             </div>
             <div class="col-sm-9">
                 <div id="current">
 
                 </div>
-                <h2>5-Day Forecast:</h2>
-                <div class="row" id="forecast">
+                <h3>5-Day Forecast:</h3>
+                <div class="row justify-content-between" id="forecast">
 
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>
