@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="./assets/style/reset.css">
+    <!-- <link rel="stylesheet" href="./assets/style/reset.css"> -->
     <link rel="stylesheet" href="./assets/style/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
@@ -18,17 +18,14 @@
 </head>
 
 <body>
-
-    <div class="cotainer">
-        <div class="row">
-            <div class="container col-12 text-white bg-dark text-center">
-                <h1>Weather Dashboard</h1>
-            </div>
+    <div class="container col-12">
+        <div class="row text-white bg-dark">
+            <h1 class="col-12 text-center">Weather Dashboard</h1>
         </div>
         <div class="row">
-            <div class="col-sm-3 bg-light text-dark">
+            <div class="col-sm-3 bg-light text-dark pt-2">
                 <h4>Search for a City:</h4>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 pt-2">
                     <input type="text" class="form-control" placeholder="Input City" aria-label="Recipient's username"
                         aria-describedby="button-addon" id="citySearch">
                     <div class="input-group-append">
@@ -38,12 +35,13 @@
                 </div>
             </div>
             <div class="col-sm-9">
-                <div id="current">
+                <div class="continer">
+                    <div id="current">
 
-                </div>
-                <h3>5-Day Forecast:</h3>
-                <div class="row justify-content-between" id="forecast">
-
+                    </div>
+                    <h3>5-Day Forecast:</h3>
+                    <div class="row justify-content-around" id="forecast">
+                    </div>
                 </div>
             </div>
         </div>
