@@ -15,7 +15,7 @@ window.onload = function () {
             let cardBody = $("<div>").attr("class", "card-body currentWeather");
             let cityDate = $("<h2>").text(response.name + " (" + moment().format("L") + ")");
             let currentImg = $("<img>");
-            currentImg.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon +"@2x.png");
+            currentImg.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
             cityDate.append(currentImg);
             let temp = $("<p>").text("Tempature: " + fahrenheit(response.main.temp).toFixed(1) + " " + String.fromCharCode(176) + "F");
             let humid = $("<p>").text("Humidity: " + response.main.humidity + "%");
@@ -36,7 +36,7 @@ window.onload = function () {
             let forecasts = response.list
             let fiveDay = [];
             let day;
-            
+
             for (let i = 0; i < forecasts.length; i++) {
                 if ((new Date(forecasts[i].dt * 1000)).toLocaleString().includes(day)) {
                     fiveDay[fiveDay.length - 1].clouds.push(forecasts[i].clouds.all);
@@ -44,37 +44,33 @@ window.onload = function () {
                     fiveDay[fiveDay.length - 1].humidity.push(forecasts[i].main.humidity);
                     fiveDay[fiveDay.length - 1].highTemp.push(forecasts[i].main.temp_max);
                     fiveDay[fiveDay.length - 1].lowTemp.push(forecasts[i].main.temp_min);
-                    console.log(day)
                 } else {
-                    
+
                     day = (new Date(forecasts[i].dt * 1000)).toLocaleString().slice(0, 10);
-                    console.log(day);
                     let obj = {
                         day: day,
                         "clouds": [forecasts[i].clouds.all],
-                        "icon":[forecasts[i].weather[0].icon],
+                        "icon": [forecasts[i].weather[0].icon],
                         "humidity": [forecasts[i].main.humidity],
                         "highTemp": [forecasts[i].main.temp_max],
                         "lowTemp": [forecasts[i].main.temp_min],
 
                     }
                     fiveDay.push(obj);
-                    console.log(fiveDay)
                 }
 
             }
             // using 5 day forecast object to create html elements 
-            for (let i = 0; i< 5; i++) {
-                let chosenIcon = Math.ceil(fiveDay[i].icon.length/2) - 1; 
-                console.log(chosenIcon);
-                let card = $("<div>").attr("class", "card col-md-2 p-1 m-2 card text-white bg-primary")
-                let cardBody = $("<div>").attr("class", "card-body p-0")
+            for (let i = 0; i < 5; i++) {
+                let chosenIcon = Math.ceil(fiveDay[i].icon.length / 2) - 1;
+                let card = $("<div>").attr("class", "card col-lg-2 p-1 card text-white bg-primary")
+                let cardBody = $("<div>").attr("class", "card-body p-0 text-center")
                 let date = $("<h5>").text(fiveDay[i].day);
                 date.attr("class", "card-title")
-                let icon = $("<img>").attr("src","http://openweathermap.org/img/wn/" +fiveDay[i].icon[chosenIcon]+".png");
+                let icon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + fiveDay[i].icon[chosenIcon] + ".png");
                 let high = $("<div>").text("High: " + fahrenheit(Math.max(...fiveDay[i].highTemp)).toFixed(1) + " " + String.fromCharCode(176) + "F");
                 let low = $("<div>").text("Low: " + fahrenheit(Math.min(...fiveDay[i].lowTemp)).toFixed(1) + String.fromCharCode(176) + " " + "F");
-                let humidity = $("<div>").text("Humidity: " +(fiveDay[i].humidity.reduce((a,b) => a + b, 0) /fiveDay[i].humidity.length).toFixed(0)+ "%");
+                let humidity = $("<div>").text("Humidity: " + (fiveDay[i].humidity.reduce((a, b) => a + b, 0) / fiveDay[i].humidity.length).toFixed(0) + "%");
                 cardBody.append(date, icon, high, low, humidity);
                 card.append(cardBody)
                 $("#forecast").append(card);
@@ -88,9 +84,8 @@ window.onload = function () {
                 url: uvURL,
                 method: "GET"
             }).then(function (response) {
-                console.log(response)
                 let index = $("<mark>").text(response.value)
-                index.attr( "class" , indexColor(response.value))
+                index.attr("class", indexColor(response.value))
                 let UV = $("<div>").text("UV Index: ")
                 UV.append(index)
                 $(".currentWeather").append(UV)
@@ -104,22 +99,46 @@ window.onload = function () {
         temp -= 459.67
         return temp;
     };
-    function indexColor(i){
+    function indexColor(i) {
         let indexClass = ""
-        if(i<4){
-            indexClass = "btn btn-success"
-        }else if(i<8){
-            indexClass = "btn btn-warning"
-        }else{
-            indexClass = "btn btn-danger"
+        if (i < 4) {
+            indexClass = "badge badge-success"
+        } else if (i < 8) {
+            indexClass = "badge badge-warning"
+        } else {
+            indexClass = "badge badge-danger"
         }
         return indexClass
     }
-    getWeather("tucson");
-    $("#search").on("click", function(event){
+    if (localStorage.length == 0) {
+        localStorage.setItem("searches", JSON.stringify([]));
+    }
+    else {
+        let storage = JSON.parse(localStorage.getItem("searches"));
+        for (let i = 0; i < storage.length; i++) {
+            let newList = $("<li>").text(storage[i]);
+            newList.attr("class", "list-group-item");
+            $("#citiesList").append(newList);
+        }
+        getWeather(storage[0]);
+    }
+    console.log(localStorage.length)
+    $("li").on("click", function () {
+        getWeather($(this).text());
+    })
+    $("#search").on("click", function (event) {
         event.preventDefault();
-        let searchVal = $("#citySearch").val()
-        console.log(searchVal)
-        getWeather(searchVal);
+        let searchVal = $("#citySearch").val();
+        let newList = $("<li>").text(searchVal);
+        newList.attr("class", "list-group-item");
+        let storage = JSON.parse(localStorage.getItem("searches"));
+        if (storage.includes(searchVal)) {
+            getWeather(searchVal);
+        } else {
+            storage.unshift(searchVal);
+            localStorage.setItem("searches", JSON.stringify(storage));
+            $("#citiesList").prepend(newList);
+            getWeather(searchVal);
+        }
     })
 }
