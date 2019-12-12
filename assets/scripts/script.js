@@ -110,7 +110,7 @@ window.onload = function () {
         }
         return indexClass
     }
-    if (localStorage.length == 0) {
+    if (JSON.parse(localStorage.getItem("searches")) == undefined) {
         localStorage.setItem("searches", JSON.stringify([]));
     }
     else {
